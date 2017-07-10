@@ -114,6 +114,7 @@ Summary:     A library for low-level manipulation with block devices
 License:     LGPLv2+
 URL:         https://github.com/rhinstaller/libblockdev
 Source0:     https://github.com/storaged-project/libblockdev/archive/%{version}-1.tar.gz
+Source1:     libblockdev.rpmlintrc
 
 BuildRequires: pkgconfig(glib-2.0)
 %if %{with_gi}
