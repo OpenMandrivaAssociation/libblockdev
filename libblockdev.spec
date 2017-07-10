@@ -5,26 +5,65 @@
 
 %define libblock	%mklibname blockdev %{major}
 %define libblockdev	%mklibname -d blockdev
-%define libbdbtrfs	%mklibname blockdev %{major}
-%define libbdbtrfsdev	%mklibname -d blockdev
+
+%define libbdbtrfs	%mklibname bd_btrfs %{major}
+%define libbdbtrfsdev	%mklibname -d bd_btrfs
+
+%define libbdcrypto	%mklibname bd_crypto %{major}
+%define libbdcryptodev	%mklibname -d bd_crypto
+
+%define libbddm		%mklibname bd_dm %{major}
+%define libbddmdev	%mklibname -d bd_dm
+
+%define libbdloop	%mklibname bd_loop %{major}
+%define libbdloopdev	%mklibname -d bd_loop
+
+%define libbdlvm	%mklibname bd_lvm %{major}
+%define libbdlvmdev	%mklibname -d bd_lvm
+# /libbd_lvm-dbus.so
+%define libbdlvmdbus	%mklibname bd_lvm-dbus %{major}
+%define libbdlvmdbusdev %mklibname -d bd_lvm-dbus
+# libbd_mdraid.so
+%define libbdmdraid	%mklibname bd_mdraid %{major}
+%define libbdmdraiddev	%mklibname -d bd_mdraid
+# libbd_mpath.so.*
+%define libdbmpath	%mklibname bd_mpath %{major}
+%define libbdmpathdev	%mklibname -d bd_mpath
+# /libbd_swap.so.
+%define libdbswap	%mklibname bd_swap %{major}
+%define libbdswapdev	%mklibname -d bd_swap
+# /libbd_part.so.
+%define libdbpart	%mklibname bd_part %{major}
+%define libbdpartdev	%mklibname -d bd_part
+# /libbd_part_err.so.
+%define libdbparterr	%mklibname bd_part_err %{major}
+%define libbdparterrdev	%mklibname -d bd_part_err
+# /libbd_kbd.so.
+%define libdbkbd	%mklibname bd_kbd %{major}
+%define libbdkbddev	%mklibname -d bd_kbd
+# libbd_fs.so.
+%define libdbfs	%mklibname bd_fs %{major}
+%define libbdfsdev	%mklibname -d bd_fs
+
 
 %define Werror_cflags %nil
 %define with_python3 1
 %define with_gtk_doc 0
 %define with_bcache 1
 %define with_btrfs 1
-%define with_crypto 0
-%define with_dm 0
-%define with_loop 0
-%define with_lvm 0
-%define with_lvm_dbus 0
-%define with_mdraid 0
-%define with_mpath 0
-%define with_swap 0
-%define with_kbd 0
-%define with_part 0
-%define with_fs 0
-%define with_gi 0
+%define with_crypto 1
+%define with_dm 1
+%define with_loop 1
+%define with_lvm 1
+%define with_lvm_dbus 1
+%define with_mdraid 1
+%define with_mpath 1
+%define with_swap 1
+%define with_kbd 1
+%define with_part 1
+%define with_part_err 1
+%define with_fs 1
+%define with_gi 1
 
 %if %{with_btrfs} != 1
 %define btrfs_copts --without-btrfs
@@ -171,260 +210,281 @@ with the libblockdev-btrfs plugin/library.
 %endif
 
 %if %{with_crypto}
-%package crypto
+%package -n %{libbdcrypto}
 BuildRequires: pkgconfig(libcryptsetup)
-BuildRequires: volume_key-devel >= 0.3.9-7
+BuildRequires: volume_key-devel
 BuildRequires: nss-devel
 Summary:     The crypto plugin for the libblockdev library
 
-%description crypto
+%description -n %{libbdcrypto}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to encrypted devices (LUKS).
 
-%package crypto-devel
-Summary:     Development files for the libblockdev-crypto plugin/library
-Requires: %{name}-crypto%{?_isa} = %{version}-%{release}
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdcryptodev}
+Summary:	Development files for the libblockdev-crypto plugin/library
+Requires:	%{libbdcrypto} = %{version}-%{release}
+Requires:	pkgconfig(glib-2.0)
 
-%description crypto-devel
+%description -n %{libbdcryptodev}
+This package contains header files and pkg-config files needed for development
+with the libblockdev-crypto plugin/library.
+%endif
+
+%if %{with_part_err}
+%package -n	%{libdbparterr}
+BuildRequires:	pkgconfig(libcryptsetup)
+Summary:	A library with utility functions for the libblockdev library
+Requires:	%{libbdutils} = %{version}-%{release}
+
+%description -n %{libdbparterr}
+The libblockdev library plugin (and in the same time a standalone library)
+providing the functionality related to encrypted devices (LUKS).
+
+%package -n	%{libbdparterrdev}
+Summary:	Development files for the libblockdev-crypto plugin/library
+Requires:	%{libdbparterr} = %{version}-%{release}
+Requires:	%{libbdutilsdev} = %{version}-%{release}
+Requires:	pkgconfig(glib-2.0)
+
+%description -n %{libbdparterrdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-crypto plugin/library.
 %endif
 
 %if %{with_dm}
-%package dm
+%package -n %{libbddm}
 BuildRequires: device-mapper-devel
 BuildRequires: %{_lib}dmraid-devel
-BuildRequires: systemd-devel
+BuildRequires: pkgconfig(systemd)
 Summary:     The Device Mapper plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
+Requires: %{name}-utils
 Requires: device-mapper
 Requires: dmraid
 
-%description dm
+%description -n %{libbddm}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to Device Mapper.
 
-%package dm-devel
+%package -n %{libbddmdev}
 Summary:     Development files for the libblockdev-dm plugin/library
-Requires: %{name}-dm%{?_isa} = %{version}-%{release}
+Requires: %{libbddm} = %{version}-%{release}
 Requires: pkgconfig(glib-2.0)
 Requires: device-mapper-devel
-Requires: systemd-devel
+Requires: pkgconfig(systemd)
 Requires: dmraid-devel
 Requires: %{name}-utils-devel%{?_isa}
 
-%description dm-devel
+%description -n %{libbddmdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-dm plugin/library.
 %endif
 
 %if %{with_fs}
-%package fs
+%package -n %{libdbfs}
 BuildRequires: parted-devel
-BuildRequires: libblkid-devel
-BuildRequires: libmount-devel
+BuildRequires: pkgconfig(blkid)
+BuildRequires: pkgconfig(mount)
 Summary:     The FS plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
+Requires: %{name}-utils
 Requires: device-mapper-multipath
 
-%description fs
+%description -n %{libdbfs}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to operations with file systems.
 
-%package fs-devel
-Summary:     Development files for the libblockdev-fs plugin/library
-Requires: %{name}-fs%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
-Requires: xfsprogs
-Requires: dosfstools
+%package -n	%{libbdfsdev}
+Summary:	Development files for the libblockdev-fs plugin/library
+Requires:	%{libdbfs} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
+Requires:	xfsprogs
+Requires:	dosfstools
 
-%description fs-devel
+%description -n %{libbdfsdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-fs plugin/library.
 %endif
 
 %if %{with_kbd}
-%package kbd
-BuildRequires: kmod-devel
-Summary:     The KBD plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
+%package -n %{libdbkbd}
+BuildRequires:	kmod-devel
+Summary:	The KBD plugin for the libblockdev library
+Requires:	%{name}-utils
 %if %{with_bcache}
-Requires: bcache-tools >= 1.0.8
+Requires:	bcache-tools
 %endif
 
-%description kbd
+%description -n %{libdbkbd}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to kernel block devices (namely zRAM and
 Bcache).
 
-%package kbd-devel
-Summary:     Development files for the libblockdev-kbd plugin/library
-Requires: %{name}-kbd%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
+%package -n %{libbdkbddev}
+Summary:	Development files for the libblockdev-kbd plugin/library
+Requires:	%{libdbkbd} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
 
-%description kbd-devel
+%description	-n %{libbdkbddev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-kbd plugin/library.
 %endif
 
 %if %{with_loop}
-%package loop
+%package -n %{libbdloop}
 Summary:     The loop plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
+Requires: %{name}-utils
 
-%description loop
+%description -n %{libbdloop}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to loop devices.
 
-%package loop-devel
-Summary:     Development files for the libblockdev-loop plugin/library
-Requires: %{name}-loop%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdloopdev}
+Summary:	Development files for the libblockdev-loop plugin/library
+Requires:	%{libbdloop} = %{version}-%{release}
+Requires:	%{name}-utils-devel%{?_isa}
+Requires:	pkgconfig(glib-2.0)
 
-%description loop-devel
+%description -n %{libbdloopdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-loop plugin/library.
 %endif
 
 %if %{with_lvm}
-%package lvm
+%package -n %{libbdlvm}
 BuildRequires: device-mapper-devel
 Summary:     The LVM plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
-Requires: lvm2
+Requires:	%{name}-utils
+Requires:	lvm2
 # for thin_metadata_size
-Requires: device-mapper-persistent-data
+# fix me
+#Requires: device-mapper-persistent-data
 
-%description lvm
+%description -n %{libbdlvm}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the LVM-related functionality.
 
-%package lvm-devel
-Summary:     Development files for the libblockdev-lvm plugin/library
-Requires: %{name}-lvm%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdlvmdev}
+Summary:	Development files for the libblockdev-lvm plugin/library
+Requires:	%{libbdlvm} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
 
-%description lvm-devel
+%description -n %{libbdlvmdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-lvm plugin/library.
 %endif
 
 %if %{with_lvm_dbus}
-%package lvm-dbus
+%package -n %{libbdlvmdbus}
 BuildRequires: device-mapper-devel
 Summary:     The LVM plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 1.4
+Requires: %{name}-utils
 Requires: lvm2-dbusd >= 2.02.156
 # for thin_metadata_size
 Requires: device-mapper-persistent-data
 
-%description lvm-dbus
+%description -n %{libbdlvmdbus}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the LVM-related functionality utilizing the LVM DBus API.
 
-%package lvm-dbus-devel
-Summary:     Development files for the libblockdev-lvm-dbus plugin/library
-Requires: %{name}-lvm-dbus%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa} >= 1.4
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdlvmdbusdev}
+Summary:	Development files for the libblockdev-lvm-dbus plugin/library
+Requires:	%{libbdlvmdbus} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
 
-%description lvm-dbus-devel
+%description -n %{libbdlvmdbusdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-lvm-dbus plugin/library.
 %endif
 
 %if %{with_mdraid}
-%package mdraid
-BuildRequires: libbytesize-devel
-Summary:     The MD RAID plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
-Requires: mdadm
+%package -n %{libbdmdraid}
+BuildRequires:	libbytesize-devel
+Summary:	The MD RAID plugin for the libblockdev library
+Requires:	%{name}-utils
+Requires:	mdadm
 
-%description mdraid
+%description	-n %{libbdmdraid}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to MD RAID.
 
-%package mdraid-devel
-Summary:     Development files for the libblockdev-mdraid plugin/library
-Requires: %{name}-mdraid%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdmdraiddev}
+Summary:	Development files for the libblockdev-mdraid plugin/library
+Requires:	%{libbdmdraid} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
 
-%description mdraid-devel
+%description -n %{libbdmdraiddev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-mdraid plugin/library.
 %endif
 
 %if %{with_mpath}
-%package mpath
-BuildRequires: device-mapper-devel
-Summary:     The multipath plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
-Requires: device-mapper-multipath
+%package -n %{libdbmpath}
+BuildRequires:	device-mapper-devel
+Summary:	The multipath plugin for the libblockdev library
+Requires:	%{name}-utils
+Requires:	device-mapper-multipath
 
-%description mpath
+%description -n %{libdbmpath}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to multipath devices.
 
-%package mpath-devel
-Summary:     Development files for the libblockdev-mpath plugin/library
-Requires: %{name}-mpath%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdmpathdev}
+Summary:	Development files for the libblockdev-mpath plugin/library
+Requires:	%{libdbmpath} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
 
-%description mpath-devel
+%description -n %{libbdmpathdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-mpath plugin/library.
 %endif
 
 
 %if %{with_part}
-%package part
-BuildRequires: parted-devel
-Summary:     The partitioning plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
-Requires: device-mapper-multipath
-Requires: gdisk
-Requires: util-linux
+%package -n	%{libdbpart}
+BuildRequires:	parted-devel
+Summary:	The partitioning plugin for the libblockdev library
+Requires:	%{name}-utils
+Requires:	device-mapper-multipath
+Requires:	gdisk
+Requires:	util-linux
 
-%description part
+%description -n	%{libdbpart}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to partitioning.
 
-%package part-devel
-Summary:     Development files for the libblockdev-part plugin/library
-Requires: %{name}-part%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdpartdev}
+Summary:	Development files for the libblockdev-part plugin/library
+Requires:	%{libdbpart} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
 
-%description part-devel
+%description -n	%{libdbpart}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-part plugin/library.
 %endif
 
-
 %if %{with_swap}
-%package swap
-Summary:     The swap plugin for the libblockdev library
-Requires: %{name}-utils%{?_isa} >= 0.11
-Requires: util-linux
+%package -n	%{libdbswap}
+Summary:	The swap plugin for the libblockdev library
+Requires:	%{name}-utils
+Requires:	util-linux
 
-%description swap
+%description -n %{libdbswap}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to swap devices.
 
-%package swap-devel
-Summary:     Development files for the libblockdev-swap plugin/library
-Requires: %{name}-swap%{?_isa} = %{version}-%{release}
-Requires: %{name}-utils-devel%{?_isa}
-Requires: pkgconfig(glib-2.0)
+%package -n	%{libbdswapdev}
+Summary:	Development files for the libblockdev-swap plugin/library
+Requires:	%{libdbswap} = %{version}-%{release}
+Requires:	%{name}-utils-devel
+Requires:	pkgconfig(glib-2.0)
 
-%description swap-devel
+%description -n %{libbdswapdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-swap plugin/library.
 %endif
@@ -452,20 +512,20 @@ This package contains header files and pkg-config files needed for development
 with the libblockdev-s390 plugin/library.
 %endif
 
-%package plugins-all
-Summary:     Meta-package that pulls all the libblockdev plugins as dependencies
-Requires: %{name}%{?_isa} = %{version}-%{release}
+%package	plugins-all
+Summary:	Meta-package that pulls all the libblockdev plugins as dependencies
+Requires:	%{name} = %{version}-%{release}
 
 %if %{with_btrfs}
-Requires: %{libbdbtrfs} = %{version}-%{release}
+Requires:	%{libbdbtrfs} = %{version}-%{release}
 %endif
 
 %if %{with_crypto}
-Requires: %{name}-crypto%{?_isa} = %{version}-%{release}
+Requires:	%{libbdcrypto} = %{version}-%{release}
 %endif
 
 %if %{with_dm}
-Requires: %{name}-dm%{?_isa} = %{version}-%{release}
+Requires:	%{libbddmdev} = %{version}-%{release}
 %endif
 
 %if %{with_fs}
@@ -473,31 +533,34 @@ Requires: %{name}-fs%{?_isa} = %{version}-%{release}
 %endif
 
 %if %{with_kbd}
-Requires: %{name}-kbd%{?_isa} = %{version}-%{release}
+Requires:	%{libdbkbd} = %{version}-%{release}
 %endif
 
 %if %{with_loop}
-Requires: %{name}-loop%{?_isa} = %{version}-%{release}
+Requires:	%{libbdloop} = %{version}-%{release}
 %endif
 
 %if %{with_lvm}
-Requires: %{name}-lvm%{?_isa} = %{version}-%{release}
+Requires:	%{libbdlvm}  = %{version}-%{release}
 %endif
 
 %if %{with_mdraid}
-Requires: %{name}-mdraid%{?_isa} = %{version}-%{release}
+Requires:	%{libbdmdraid} = %{version}-%{release}
 %endif
 
 %if %{with_mpath}
-Requires: %{name}-mpath%{?_isa} = %{version}-%{release}
+Requires:	%{libdbmpath} = %{version}-%{release}
 %endif
 
+%if %{with_part_err}
+Requires: 	%{libdbparterr} = %{version}-%{release}
+%endif
 %if %{with_part}
-Requires: %{name}-part%{?_isa} = %{version}-%{release}
+Requires:	%{libdbpart} = %{version}-%{release}
 %endif
 
 %if %{with_swap}
-Requires: %{name}-swap%{?_isa} = %{version}-%{release}
+Requires:	%{libdbswap} = %{version}-%{release}
 %endif
 
 %ifarch s390 s390x
@@ -550,15 +613,17 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 
 %files -n %{libbdutils}
 %{_libdir}/libbd_utils.so.*
-%if %{with_part}
+
+%if %{with_part_err}
+%files -n %{libdbparterr}
 %{_libdir}/libbd_part_err.so.*
+
+%files -n %{libbdparterrdev}
+%{_libdir}/libbd_part_err.so
 %endif
 
 %files -n %{libbdutilsdev}
 %{_libdir}/libbd_utils.so
-%if %{with_part}
-%{_libdir}/libbd_part_err.so
-%endif
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/utils.h
 %{_includedir}/blockdev/sizes.h
@@ -567,6 +632,7 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %{_includedir}/blockdev/dev_utils.h
 
 %if %{with_btrfs}
+
 %files -n %{libbdbtrfs}
 %{_libdir}/libbd_btrfs.so.%{major}*
 
@@ -577,119 +643,113 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %endif
 
 %if %{with_crypto}
-%files crypto
-%{_libdir}/libbd_crypto.so.*
+%files -n %{libbdcrypto}
+%{_libdir}/libbd_crypto.so.%{major}*
 
-%files crypto-devel
+%files -n %{libbdcryptodev}
 %{_libdir}/libbd_crypto.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/crypto.h
 %endif
 
 %if %{with_dm}
-%files dm
+%files -n %{libbddm}
 %{_libdir}/libbd_dm.so.*
 
-%files dm-devel
+%files -n %{libbddmdev}
 %{_libdir}/libbd_dm.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/dm.h
 %endif
 
-
 %if %{with_fs}
-%files fs
+%files -n %{libdbfs}
 %{_libdir}/libbd_fs.so.*
 
-%files fs-devel
+%files -n %{libbdfsdev}
 %{_libdir}/libbd_fs.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/fs.h
 %endif
 
-
 %if %{with_kbd}
-%files kbd
+%files -n %{libdbkbd}
 %{_libdir}/libbd_kbd.so.*
 
-%files kbd-devel
+%files -n %{libbdkbddev}
 %{_libdir}/libbd_kbd.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/kbd.h
 %endif
 
-
 %if %{with_loop}
-%files loop
-%{_libdir}/libbd_loop.so.*
+%files -n %{libbdloop}
+%{_libdir}/libbd_loop.so.%{major}*
 
-%files loop-devel
+%files -n %{libbdloopdev}
 %{_libdir}/libbd_loop.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/loop.h
 %endif
 
 %if %{with_lvm}
-%files lvm
-%{_libdir}/libbd_lvm.so.*
+%files -n %{libbdlvm}
+%{_libdir}/libbd_lvm.so.%{major}*
 
-%files lvm-devel
+%files -n %{libbdlvmdev}
 %{_libdir}/libbd_lvm.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/lvm.h
 %endif
 
 %if %{with_lvm_dbus}
-%files lvm-dbus
+%files -n %{libbdlvmdbus}
 %{_libdir}/libbd_lvm-dbus.so.*
 %config %{_sysconfdir}/libblockdev/conf.d/10-lvm-dbus.cfg
 
-%files lvm-dbus-devel
+%files -n %{libbdlvmdbusdev}
 %{_libdir}/libbd_lvm-dbus.so
 %endif
 
 %if %{with_mdraid}
-%files mdraid
+%files -n %{libbdmdraid}
 %{_libdir}/libbd_mdraid.so.*
 
-%files mdraid-devel
+%files -n %{libbdmdraiddev}
 %{_libdir}/libbd_mdraid.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/mdraid.h
 %endif
 
 %if %{with_mpath}
-%files mpath
+%files -n %{libdbmpath}
 %{_libdir}/libbd_mpath.so.*
 
-%files mpath-devel
+%files -n %{libbdmpathdev}
 %{_libdir}/libbd_mpath.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/mpath.h
 %endif
 
-
 %if %{with_part}
-%files part
+%files -n %{libdbpart}
 %{_libdir}/libbd_part.so.*
 
-%files part-devel
+%files -n %{libbdpartdev}
 %{_libdir}/libbd_part.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/part.h
 %endif
 
-
 %if %{with_swap}
-%files swap
-%{_libdir}/libbd_swap.so.*
+%files -n %{libdbswap}
+%{_libdir}/libbd_swap.so.%{major}*
 
-%files swap-devel
+%files -n %{libbdswapdev}
 %{_libdir}/libbd_swap.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/swap.h
 %endif
-
 
 %ifarch s390 s390x
 %files s390
