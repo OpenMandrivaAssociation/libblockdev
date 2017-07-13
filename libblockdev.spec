@@ -163,9 +163,9 @@ This package contains header files and pkg-config files needed for development
 with the libblockdev library.
 
 %if %{with_python3}
-%package -n python-blockdev
-Summary:     Python3 gobject-introspection bindings for libblockdev
-Requires: %{name} = %{version}-%{release}
+%package -n	python-blockdev
+Summary:	Python3 gobject-introspection bindings for libblockdev
+Requires:	%{libblock} = %{version}-%{release}
 
 %description -n python-blockdev
 This package contains enhancements to the gobject-introspection bindings for
@@ -266,14 +266,14 @@ Requires:	dmraid
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to Device Mapper.
 
-%package -n %{libbddmdev}
-Summary:     Development files for the libblockdev-dm plugin/library
-Requires: %{libbddm} = %{version}-%{release}
-Requires: pkgconfig(glib-2.0)
-Requires: device-mapper-devel
-Requires: pkgconfig(systemd)
-Requires: dmraid-devel
-Requires: %{libbdutilsdev}
+%package -n	%{libbddmdev}
+Summary:	Development files for the libblockdev-dm plugin/library
+Requires:	%{libbddm} = %{version}-%{release}
+Requires:	pkgconfig(glib-2.0)
+Requires:	device-mapper-devel
+Requires:	pkgconfig(systemd)
+Requires:	dmraid-devel
+Requires:	%{libbdutilsdev}
 
 %description -n %{libbddmdev}
 This package contains header files and pkg-config files needed for development
@@ -287,7 +287,7 @@ BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(mount)
 Summary:	The FS plugin for the libblockdev library
 Requires:	%{libbdutils}
-Requires:	device-mapper-multipath
+Requires:	multipath-tools
 
 %description -n %{libdbfs}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -427,7 +427,7 @@ with the libblockdev-mdraid plugin/library.
 BuildRequires:	device-mapper-devel
 Summary:	The multipath plugin for the libblockdev library
 Requires:	%{libbdutils}
-Requires:	device-mapper-multipath
+Requires:	multipath-tools
 
 %description -n %{libdbmpath}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -450,7 +450,7 @@ with the libblockdev-mpath plugin/library.
 BuildRequires:	parted-devel
 Summary:	The partitioning plugin for the libblockdev library
 Requires:	%{libbdutils}
-Requires:	device-mapper-multipath
+Requires:	multipath-tools
 Requires:	gdisk
 Requires:	util-linux
 
