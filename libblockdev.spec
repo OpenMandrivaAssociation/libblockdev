@@ -359,7 +359,7 @@ Requires:	%{libbdutils}
 Requires:	lvm2
 # for thin_metadata_size
 # fix me
-#Requires: device-mapper-persistent-data
+#Requires:	thin-provisioning-tools
 
 %description -n %{libbdlvm}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -383,7 +383,7 @@ Summary:	The LVM plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	lvm2-dbusd >= 2.02.156
 # for thin_metadata_size
-Requires: device-mapper-persistent-data
+Requires:	thin-provisioning-tools
 
 %description -n %{libbdlvmdbus}
 The libblockdev library plugin (and in the same time a standalone library)
