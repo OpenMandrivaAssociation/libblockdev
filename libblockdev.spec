@@ -109,7 +109,7 @@
 
 Name:        libblockdev
 Version:     2.10
-Release:     3
+Release:     4
 Summary:     A library for low-level manipulation with block devices
 License:     LGPLv2+
 URL:         https://github.com/rhinstaller/libblockdev
@@ -515,7 +515,7 @@ with the libblockdev-s390 plugin/library.
 
 %package	plugins-all
 Summary:	Meta-package that pulls all the libblockdev plugins as dependencies
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{libblock} = %{version}-%{release}
 
 %if %{with_btrfs}
 Requires:	%{libbdbtrfs} = %{version}-%{release}
@@ -526,7 +526,7 @@ Requires:	%{libbdcrypto} = %{version}-%{release}
 %endif
 
 %if %{with_dm}
-Requires:	%{libbddmdev} = %{version}-%{release}
+Requires:	%{libbddm} = %{version}-%{release}
 %endif
 
 %if %{with_fs}
