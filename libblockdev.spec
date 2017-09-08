@@ -109,7 +109,7 @@
 
 Name:        libblockdev
 Version:     2.10
-Release:     4
+Release:     5
 Summary:     A library for low-level manipulation with block devices
 License:     LGPLv2+
 URL:         https://github.com/rhinstaller/libblockdev
@@ -201,6 +201,7 @@ providing the BTRFS-related functionality.
 
 %package -n	%{libbdbtrfsdev}
 Summary:	Development files for the libblockdev-btrfs plugin/library
+Provides:	bd_btrfs-devel = %{EVRD}
 Requires:	%{libbdbtrfs} = %{version}-%{release}
 Requires:	pkgconfig(glib-2.0)
 Requires:	%{libbdutilsdev} = %{EVRD}
