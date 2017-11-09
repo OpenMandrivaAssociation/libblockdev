@@ -108,7 +108,7 @@
 %define configure_opts %{?distro_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?gi_copts}
 
 Name:        libblockdev
-Version:     2.13
+Version:     2.14
 Release:     1
 Summary:     A library for low-level manipulation with block devices
 License:     LGPLv2+
@@ -123,6 +123,7 @@ BuildRequires: pkgconfig(gobject-introspection-1.0)
 %if %{with_python3}
 BuildRequires: python-devel
 %endif
+%define with_gtk_doc 0
 %if %{with_gtk_doc}
 BuildRequires: gtk-doc
 %endif
@@ -627,6 +628,7 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %files -n %{libbdutilsdev}
 %{_libdir}/libbd_utils.so
 %dir %{_includedir}/blockdev
+%{_libdir}/pkgconfig/blockdev-utils.pc
 %{_includedir}/blockdev/utils.h
 %{_includedir}/blockdev/sizes.h
 %{_includedir}/blockdev/exec.h
