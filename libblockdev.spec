@@ -109,7 +109,7 @@
 
 Name:        libblockdev
 Version:     2.14
-Release:     1
+Release:     2
 Summary:     A library for low-level manipulation with block devices
 License:     LGPLv2+
 URL:         https://github.com/rhinstaller/libblockdev
@@ -344,7 +344,8 @@ providing the functionality related to loop devices.
 
 %package -n	%{libbdloopdev}
 Summary:	Development files for the libblockdev-loop plugin/library
-Requires:	%{libbdloop} = %{version}-%{release}
+Provides:	bd_loop-devel = %{EVRD}
+Requires:	%{libbdloop} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
