@@ -109,7 +109,7 @@
 
 Name:        libblockdev
 Version:     2.14
-Release:     2
+Release:     3
 Summary:     A library for low-level manipulation with block devices
 License:     LGPLv2+
 URL:         https://github.com/rhinstaller/libblockdev
