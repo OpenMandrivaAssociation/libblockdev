@@ -225,6 +225,7 @@ providing the functionality related to encrypted devices (LUKS).
 
 %package -n	%{libbdcryptodev}
 Summary:	Development files for the libblockdev-crypto plugin/library
+Provides:	bd_crypto-devel = %{EVRD}
 Requires:	%{libbdcrypto} = %{version}-%{release}
 Requires:	pkgconfig(glib-2.0)
 
@@ -245,8 +246,9 @@ providing the functionality related to encrypted devices (LUKS).
 
 %package -n	%{libbdparterrdev}
 Summary:	Development files for the libblockdev-crypto plugin/library
-Requires:	%{libdbparterr} = %{version}-%{release}
-Requires:	%{libbdutilsdev} = %{version}-%{release}
+Provides:	bd_part_err-devel = %{EVRD}
+Requires:	%{libdbparterr} = %{EVRD}
+Requires:	%{libbdutilsdev} = %{EVRD}
 Requires:	pkgconfig(glib-2.0)
 
 %description -n %{libbdparterrdev}
@@ -270,7 +272,8 @@ providing the functionality related to Device Mapper.
 
 %package -n	%{libbddmdev}
 Summary:	Development files for the libblockdev-dm plugin/library
-Requires:	%{libbddm} = %{version}-%{release}
+Provides:	bd_dm-devel = %{EVRD}
+Requires:	%{libbddm} = %{EVRD}
 Requires:	pkgconfig(glib-2.0)
 Requires:	device-mapper-devel
 Requires:	pkgconfig(systemd)
@@ -297,6 +300,7 @@ providing the functionality related to operations with file systems.
 
 %package -n	%{libbdfsdev}
 Summary:	Development files for the libblockdev-fs plugin/library
+Provides:	bd_fs-devel = %{EVRD}
 Requires:	%{libdbfs} = %{version}-%{release}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
@@ -324,7 +328,8 @@ Bcache).
 
 %package -n %{libbdkbddev}
 Summary:	Development files for the libblockdev-kbd plugin/library
-Requires:	%{libdbkbd} = %{version}-%{release}
+Provides:	bd_kbd-devel = %{EVRD}
+Requires:	%{libdbkbd} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
@@ -370,6 +375,7 @@ providing the LVM-related functionality.
 
 %package -n	%{libbdlvmdev}
 Summary:	Development files for the libblockdev-lvm plugin/library
+Provides:	bd_lvm-devel = %{EVRD}
 Requires:	%{libbdlvm} = %{version}-%{release}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
@@ -394,7 +400,8 @@ providing the LVM-related functionality utilizing the LVM DBus API.
 
 %package -n	%{libbdlvmdbusdev}
 Summary:	Development files for the libblockdev-lvm-dbus plugin/library
-Requires:	%{libbdlvmdbus} = %{version}-%{release}
+Provides:	bd_lvm-dbus-devel = %{EVRD}
+Requires:	%{libbdlvmdbus} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
@@ -416,7 +423,8 @@ providing the functionality related to MD RAID.
 
 %package -n	%{libbdmdraiddev}
 Summary:	Development files for the libblockdev-mdraid plugin/library
-Requires:	%{libbdmdraid} = %{version}-%{release}
+Provides"	bd_mdraid-devel = %{EVRD}
+Requires:	%{libbdmdraid} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
@@ -438,7 +446,8 @@ providing the functionality related to multipath devices.
 
 %package -n	%{libbdmpathdev}
 Summary:	Development files for the libblockdev-mpath plugin/library
-Requires:	%{libdbmpath} = %{version}-%{release}
+Provides:	bd_mpath-devel = %{EVRD}
+Requires:	%{libdbmpath} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
@@ -446,7 +455,6 @@ Requires:	pkgconfig(glib-2.0)
 This package contains header files and pkg-config files needed for development
 with the libblockdev-mpath plugin/library.
 %endif
-
 
 %if %{with_part}
 %package -n	%{libdbpart}
@@ -463,7 +471,8 @@ providing the functionality related to partitioning.
 
 %package -n	%{libbdpartdev}
 Summary:	Development files for the libblockdev-part plugin/library
-Requires:	%{libdbpart} = %{version}-%{release}
+Provides:	bd_part-devel = %{EVRD}
+Requires:	%{libdbpart} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
@@ -484,6 +493,7 @@ providing the functionality related to swap devices.
 
 %package -n	%{libbdswapdev}
 Summary:	Development files for the libblockdev-swap plugin/library
+Provides:	bd_swap-devel = %{version}-%{release}
 Requires:	%{libdbswap} = %{version}-%{release}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
@@ -492,7 +502,6 @@ Requires:	pkgconfig(glib-2.0)
 This package contains header files and pkg-config files needed for development
 with the libblockdev-swap plugin/library.
 %endif
-
 
 %ifarch s390 s390x
 %package s390
