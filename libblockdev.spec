@@ -423,7 +423,7 @@ providing the functionality related to MD RAID.
 
 %package -n	%{libbdmdraiddev}
 Summary:	Development files for the libblockdev-mdraid plugin/library
-Provides"	bd_mdraid-devel = %{EVRD}
+Provides:	bd_mdraid-devel = %{EVRD}
 Requires:	%{libbdmdraid} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
