@@ -108,13 +108,15 @@
 %define configure_opts %{?distro_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?gi_copts}
 
 Name:        libblockdev
-Version:     2.14
-Release:     3.1
+Version:     2.16
+Release:     1
 Summary:     A library for low-level manipulation with block devices
 License:     LGPLv2+
 URL:         https://github.com/rhinstaller/libblockdev
 Source0:     https://github.com/storaged-project/libblockdev/archive/%{version}-1.tar.gz
 Source1:     libblockdev.rpmlintrc
+
+BuildRequires: pkgconfig(libkmod)
 
 BuildRequires: pkgconfig(glib-2.0)
 %if %{with_gi}
@@ -585,7 +587,8 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %prep
 %setup -q -n %{name}-%{version}-1
-sed -i 's!-Werror!!g' configure.ac src/utils/Makefile.am src/plugins/Makefile.am
+sed -i 's!-Werror!!g' configure.ac src/utils/Makefile.am src/plugins/Makefile.am src/plugins/fs/Makefile.am
+autoreconf -fiv
 
 %build
 export
@@ -611,6 +614,9 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/blockdev.h
 %{_includedir}/blockdev/plugins.h
+%{_includedir}/blockdev/module.h
+%dir %{_includedir}/blockdev/fs
+%{_includedir}/blockdev/fs/*.h
 %{_libdir}/pkgconfig/blockdev.pc
 %if %{with_gtk_doc}
 %{_datadir}/gtk-doc/html/libblockdev
