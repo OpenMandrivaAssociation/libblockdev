@@ -476,7 +476,7 @@ Requires:	%{libdbpart} = %{EVRD}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
-%description -n %{libdbpart}
+%description -n %{libdbpartdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-part plugin/library.
 %endif
