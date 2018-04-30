@@ -584,7 +584,7 @@ Requires:	%{name}-s390 = %{version}-%{release}
 A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %prep
-%setup -q -n %{name}-%{version}-1
+%setup -q
 sed -i 's!-Werror!!g' configure.ac src/utils/Makefile.am src/plugins/Makefile.am src/plugins/fs/Makefile.am
 autoreconf -fiv
 
