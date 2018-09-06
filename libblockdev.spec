@@ -45,6 +45,13 @@
 %define libdbfs %mklibname bd_fs %{major}
 %define libbdfsdev %mklibname -d bd_fs
 
+# libbd_nvdimm.so.
+%define libdbnvdimm %mklibname bd_nvdimm %{major}
+%define libdbnvdimmdev %mklibname -d bd_nvdimm
+# libbd_vdo.so.
+%define libdbvdo %mklibname bd_vdo %{major}
+%define libbdvdodev %mklibname -d bd_vdo
+
 
 %define Werror_cflags %nil
 %define with_python3 1
@@ -64,6 +71,7 @@
 %define with_part_err 1
 %define with_fs 1
 %define with_gi 1
+%define with_nvdimm 1
 
 %if %{with_btrfs} != 1
 %define btrfs_copts --without-btrfs
@@ -104,11 +112,15 @@
 %if %{with_gi} != 1
 %define gi_copts --disable-introspection
 %endif
+%if %{with_nvdimm} != 1
+%define nvdimm_copts --without-nvdimm
+%endif
 
-%define configure_opts %{?distro_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?gi_copts}
+
+%define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts}
 
 Name:		libblockdev
-Version:	2.18
+Version:	2.19
 Release:	1
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
@@ -117,6 +129,9 @@ Source0:	https://github.com/storaged-project/libblockdev/archive/%{name}-%{versi
 Source1:	libblockdev.rpmlintrc
 BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(yaml-0.1)
+BuildRequires:	pkgconfig(libdaxctl)
+BuildRequires:	pkgconfig(libndctl)
 %if %{with_gi}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %endif
@@ -433,6 +448,29 @@ This package contains header files and pkg-config files needed for development
 with the libblockdev-mdraid plugin/library.
 %endif
 
+%if %{with_nvdimm}
+%package -n %{libdbnvdimm}
+BuildRequires:	ndctl-devel
+BuildRequires:	libuuid-devel
+Summary:	The NVDIMM plugin for the libblockdev library
+Requires:       %{libbdutils}
+Requires:	ndctl
+
+%description -n %{libdbnvdimm}
+The libblockdev library plugin (and in the same time a standalone library)
+providing the functionality related to operations with NVDIMM devices.
+
+%package -n %{libdbnvdimmdev}
+Summary:	Development files for the libblockdev-mpath plugin/library
+Provides:	bd_mpath-devel = %{EVRD}
+Requires:	%{libdbnvdimm} = %{EVRD}
+
+%description -n %{libdbnvdimmdev}
+This package contains header files and pkg-config files needed for development
+with the libblockdev-mpath plugin/library.
+%endif
+
+
 %if %{with_mpath}
 %package -n %{libdbmpath}
 BuildRequires:	device-mapper-devel
@@ -565,6 +603,10 @@ Requires:	%{libbdmdraid} = %{version}-%{release}
 Requires:	%{libdbmpath} = %{version}-%{release}
 %endif
 
+%if %{with_nvdimm}
+Requires:	%{libdbnvdimm} = %{version}-%{release}
+%endif
+
 %if %{with_part_err}
 Requires: 	%{libdbparterr} = %{version}-%{release}
 %endif
@@ -612,6 +654,8 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/blockdev.h
 %{_includedir}/blockdev/plugins.h
+%{_includedir}/blockdev/nvdimm.h
+%{_includedir}/blockdev/vdo.h
 %{_includedir}/blockdev/module.h
 %dir %{_includedir}/blockdev/fs
 %{_includedir}/blockdev/fs/*.h
@@ -626,6 +670,7 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %if %{with_python3}
 %files -n python-blockdev
 %{python_sitearch}/gi/overrides/BlockDev*
+%{python_sitearch}/gi/overrides/__pycache__/*
 %endif
 
 %files -n %{libbdutils}
@@ -768,6 +813,17 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/swap.h
 %endif
+
+%if %{with_nvdimm}
+%files -n %{libdbnvdimm}
+%{_libdir}/libbd_nvdimm.so.%{major}*
+
+%files -n %{libdbnvdimmdev}
+%{_libdir}/libbd_nvdimm.so
+%dir %{_includedir}/blockdev
+%{_includedir}/blockdev/nvdimm.h
+%endif
+
 
 %ifarch s390 s390x
 %files s390
