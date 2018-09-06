@@ -72,7 +72,13 @@
 %define with_fs 1
 %define with_gi 1
 %define with_nvdimm 1
+%define with_vdo 0
+%define with_python2 0
 
+# python2 is not available on RHEL > 7 and not needed on Fedora > 29
+%if %{with_python2} != 1
+%define python2_copts --without-python2
+%endif
 %if %{with_btrfs} != 1
 %define btrfs_copts --without-btrfs
 %endif
@@ -115,6 +121,9 @@
 %if %{with_nvdimm} != 1
 %define nvdimm_copts --without-nvdimm
 %endif
+%if %{with_vdo} != 1
+%define vdo_copts --without-vdo
+%endif
 
 
 %define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts}
@@ -131,7 +140,6 @@ BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(yaml-0.1)
 BuildRequires:	pkgconfig(libdaxctl)
-BuildRequires:	pkgconfig(libndctl)
 %if %{with_gi}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %endif
@@ -247,6 +255,29 @@ Requires:	pkgconfig(glib-2.0)
 %description -n %{libbdcryptodev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-crypto plugin/library.
+%endif
+
+%if %{with_vdo}
+%package -n %{libdbvdo}
+BuildRequires: pkgconfig(bytesize)
+BuildRequires: pkgconfig(yaml-0.1)
+Summary:     The vdo plugin for the libblockdev library
+Requires: %{name}-utils >= 0.11
+Requires: vdo
+Requires: kmod-kvdo
+
+%description vdo
+The libblockdev library plugin (and in the same time a standalone library)
+providing the functionality related to VDO devices.
+
+%package -n	%{libdbvdodev}
+Summary:	Development files for the libblockdev-vdo plugin/library
+Requires:	%{libdbvdo} = %{EVRD}
+Requires:       pkgconfig(glib-2.0)
+
+%description -n %{libdbvdodev}
+This package contains header files and pkg-config files needed for development
+with the libblockdev-vdo plugin/library.
 %endif
 
 %if %{with_part_err}
@@ -450,7 +481,7 @@ with the libblockdev-mdraid plugin/library.
 
 %if %{with_nvdimm}
 %package -n %{libdbnvdimm}
-BuildRequires:	ndctl-devel
+BuildRequires:	pkgconfig(libndctl)
 BuildRequires:	libuuid-devel
 Summary:	The NVDIMM plugin for the libblockdev library
 Requires:       %{libbdutils}
@@ -607,9 +638,14 @@ Requires:	%{libdbmpath} = %{version}-%{release}
 Requires:	%{libdbnvdimm} = %{version}-%{release}
 %endif
 
+%if %{with_vdo}
+Requires:	%{libdbvdo} = %{version}-%{release}
+%endif
+
 %if %{with_part_err}
 Requires: 	%{libdbparterr} = %{version}-%{release}
 %endif
+
 %if %{with_part}
 Requires:	%{libdbpart} = %{version}-%{release}
 %endif
@@ -654,8 +690,7 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/blockdev.h
 %{_includedir}/blockdev/plugins.h
-%{_includedir}/blockdev/nvdimm.h
-%{_includedir}/blockdev/vdo.h
+%{_includedir}/blockdev/dbus.h
 %{_includedir}/blockdev/module.h
 %dir %{_includedir}/blockdev/fs
 %{_includedir}/blockdev/fs/*.h
@@ -824,6 +859,15 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %{_includedir}/blockdev/nvdimm.h
 %endif
 
+%if %{with_vdo}
+%files -n %{libdbvdo}
+{_libdir}/libbd_vdo.so.%{major}*
+
+%files -n %{libdbvdodev}
+%{_libdir}/libbd_vdo.so
+%dir %{_includedir}/blockdev
+%{_includedir}/blockdev/vdo.h
+%endif
 
 %ifarch s390 s390x
 %files s390
