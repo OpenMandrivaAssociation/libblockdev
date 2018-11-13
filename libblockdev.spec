@@ -130,7 +130,7 @@
 
 Name:		libblockdev
 Version:	2.19
-Release:	2
+Release:	3
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
@@ -304,12 +304,12 @@ with the libblockdev-crypto plugin/library.
 
 %if %{with_dm}
 %package -n %{libbddm}
-BuildRequires:	device-mapper-devel
+BuildRequires:	pkgconfig(devmapper) >= 1.02.153
 BuildRequires:	%{_lib}dmraid-devel
 BuildRequires:	pkgconfig(systemd)
 Summary:	The Device Mapper plugin for the libblockdev library
 Requires:	%{libbdutils}
-Requires:	device-mapper
+Requires:	pkgconfig(devmapper)
 Requires:	dmraid
 
 %description -n %{libbddm}
@@ -321,7 +321,7 @@ Summary:	Development files for the libblockdev-dm plugin/library
 Provides:	bd_dm-devel = %{EVRD}
 Requires:	%{libbddm} = %{EVRD}
 Requires:	pkgconfig(glib-2.0)
-Requires:	device-mapper-devel
+Requires:	pkgconfig(devmapper)
 Requires:	pkgconfig(systemd)
 Requires:	dmraid-devel
 Requires:	%{libbdutilsdev}
@@ -407,7 +407,7 @@ with the libblockdev-loop plugin/library.
 
 %if %{with_lvm}
 %package -n %{libbdlvm}
-BuildRequires:	device-mapper-devel
+BuildRequires:	pkgconfig(devmapper) >= 1.02.153
 Summary:	The LVM plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	lvm2
@@ -433,7 +433,7 @@ with the libblockdev-lvm plugin/library.
 
 %if %{with_lvm_dbus}
 %package -n %{libbdlvmdbus}
-BuildRequires:	device-mapper-devel
+BuildRequires:	pkgconfig(devmapper) >= 1.02.153
 Summary:	The LVM plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	lvm2-dbusd >= 2.02.156
@@ -504,7 +504,7 @@ with the libblockdev-mpath plugin/library.
 
 %if %{with_mpath}
 %package -n %{libdbmpath}
-BuildRequires:	device-mapper-devel
+BuildRequires:	pkgconfig(devmapper) >= 1.02.153
 Summary:	The multipath plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	multipath-tools
