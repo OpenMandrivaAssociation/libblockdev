@@ -134,7 +134,7 @@ Release:	1
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
-Source0:	https://github.com/storaged-project/libblockdev/archive/%{name}-%{version}.tar.gz
+Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/%{name}-%{version}.tar.gz
 Source1:	libblockdev.rpmlintrc
 BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
@@ -663,12 +663,10 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %prep
 %setup -q
-sed -i 's!-Werror!!g' configure.ac src/utils/Makefile.am src/plugins/Makefile.am src/plugins/fs/Makefile.am
-autoreconf -fiv
 
 %build
 export
-%configure %{?configure_opts}
+%configure %{?configure_opts} --without-gtk-doc
 %make_build
 
 %install
