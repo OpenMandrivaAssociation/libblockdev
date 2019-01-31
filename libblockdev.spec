@@ -71,7 +71,7 @@
 %define with_part_err 1
 %define with_fs 1
 %define with_gi 1
-%define with_nvdimm 1
+%define with_nvdimm 0
 %define with_vdo 0
 %define with_python2 0
 
@@ -134,12 +134,11 @@ Release:	1
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
-Source0:	https://github.com/storaged-project/libblockdev/archive/%{name}-%{version}.tar.gz
+Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/%{name}-%{version}.tar.gz
 Source1:	libblockdev.rpmlintrc
 BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(yaml-0.1)
-BuildRequires:	pkgconfig(libdaxctl)
 %if %{with_gi}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %endif
@@ -304,7 +303,7 @@ with the libblockdev-crypto plugin/library.
 
 %if %{with_dm}
 %package -n %{libbddm}
-BuildRequires:	pkgconfig(devmapper) >= 1.02.153
+BuildRequires:	pkgconfig(devmapper)
 BuildRequires:	%{_lib}dmraid-devel
 BuildRequires:	pkgconfig(systemd)
 Summary:	The Device Mapper plugin for the libblockdev library
@@ -407,7 +406,7 @@ with the libblockdev-loop plugin/library.
 
 %if %{with_lvm}
 %package -n %{libbdlvm}
-BuildRequires:	pkgconfig(devmapper) >= 1.02.153
+BuildRequires:	pkgconfig(devmapper)
 Summary:	The LVM plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	lvm2
@@ -433,7 +432,7 @@ with the libblockdev-lvm plugin/library.
 
 %if %{with_lvm_dbus}
 %package -n %{libbdlvmdbus}
-BuildRequires:	pkgconfig(devmapper) >= 1.02.153
+BuildRequires:	pkgconfig(devmapper)
 Summary:	The LVM plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	lvm2-dbusd >= 2.02.156
@@ -504,7 +503,7 @@ with the libblockdev-mpath plugin/library.
 
 %if %{with_mpath}
 %package -n %{libdbmpath}
-BuildRequires:	pkgconfig(devmapper) >= 1.02.153
+BuildRequires:	pkgconfig(devmapper)
 Summary:	The multipath plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	multipath-tools
@@ -663,12 +662,10 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %prep
 %setup -q
-sed -i 's!-Werror!!g' configure.ac src/utils/Makefile.am src/plugins/Makefile.am src/plugins/fs/Makefile.am
-autoreconf -fiv
 
 %build
 export
-%configure %{?configure_opts}
+%configure %{?configure_opts} --without-gtk-doc
 %make_build
 
 %install
@@ -705,7 +702,6 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %if %{with_python3}
 %files -n python-blockdev
 %{python_sitearch}/gi/overrides/BlockDev*
-%{python_sitearch}/gi/overrides/__pycache__/*
 %endif
 
 %files -n %{libbdutils}
