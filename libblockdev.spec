@@ -130,7 +130,7 @@
 
 Name:		libblockdev
 Version:	2.20
-Release:	1
+Release:	2
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
@@ -309,7 +309,7 @@ BuildRequires:	%{_lib}dmraid-devel
 BuildRequires:	pkgconfig(systemd)
 Summary:	The Device Mapper plugin for the libblockdev library
 Requires:	%{libbdutils}
-Requires:	pkgconfig(devmapper)
+Requires:	dmsetup
 Requires:	dmraid
 
 %description -n %{libbddm}
