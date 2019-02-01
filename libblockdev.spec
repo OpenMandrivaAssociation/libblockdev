@@ -662,7 +662,7 @@ Requires:	%{name}-s390 = %{version}-%{release}
 A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 export
