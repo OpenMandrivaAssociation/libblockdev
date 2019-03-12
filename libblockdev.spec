@@ -74,6 +74,7 @@
 %define with_nvdimm 1
 %define with_vdo 0
 %define with_python2 0
+%define with_tools 1
 
 # python2 is not available on RHEL > 7 and not needed on Fedora > 29
 %if %{with_python2} != 1
@@ -124,9 +125,11 @@
 %if %{with_vdo} != 1
 %define vdo_copts --without-vdo
 %endif
+%if %{with_tools} != 1
+%define tools_copts --without-tools
+%endif
 
-
-%define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts}
+%define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts} %{?tools_copts}
 
 Name:		libblockdev
 Version:	2.21
@@ -572,6 +575,20 @@ This package contains header files and pkg-config files needed for development
 with the libblockdev-swap plugin/library.
 %endif
 
+%if %{with_tools}
+%package tools
+Summary:    Various nice tools based on libblockdev
+Requires:   %{name}
+Requires:   %{name}-lvm
+BuildRequires: libbytesize-devel
+%if %{with_lvm_dbus}
+Recommends: %{name}-lvm-dbus
+%endif
+
+%description tools
+Various nice storage-related tools based on libblockdev.
++%endif
+
 %ifarch s390 s390x
 %package s390
 BuildRequires:	s390utils-devel
@@ -865,6 +882,11 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %{_libdir}/libbd_vdo.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/vdo.h
+%endif
+
+%if %{with_tools}
+%files tools
+%{_bindir}/lvm-cache-stats
 %endif
 
 %ifarch s390 s390x
