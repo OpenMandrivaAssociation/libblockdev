@@ -587,7 +587,7 @@ Recommends: %{name}-lvm-dbus
 
 %description tools
 Various nice storage-related tools based on libblockdev.
-+%endif
+%endif
 
 %ifarch s390 s390x
 %package s390
