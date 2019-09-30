@@ -578,8 +578,7 @@ with the libblockdev-swap plugin/library.
 %if %{with_tools}
 %package tools
 Summary:    Various nice tools based on libblockdev
-Requires:   %{name}
-Requires:   %{name}-lvm
+Requires:   %{libbdlvm} = %{EVRD}
 BuildRequires: libbytesize-devel
 %if %{with_lvm_dbus}
 Recommends: %{name}-lvm-dbus
