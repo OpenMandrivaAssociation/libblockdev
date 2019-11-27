@@ -133,7 +133,7 @@
 
 Name:		libblockdev
 Version:	2.23
-Release:	2
+Release:	3
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
@@ -217,7 +217,7 @@ with the libblockdev-utils library.
 
 %if %{with_btrfs}
 %package -n %{libbdbtrfs}
-BuildRequires:	libbytesize-devel
+BuildRequires:	pkgconfig(bytesize)
 Summary:	The BTRFS plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	btrfs-progs
@@ -262,12 +262,12 @@ with the libblockdev-crypto plugin/library.
 
 %if %{with_vdo}
 %package -n %{libdbvdo}
-BuildRequires: pkgconfig(bytesize)
-BuildRequires: pkgconfig(yaml-0.1)
-Summary:     The vdo plugin for the libblockdev library
-Requires: %{name}-utils >= 0.11
-Requires: vdo
-Requires: kmod-kvdo
+BuildRequires:	pkgconfig(bytesize)
+BuildRequires:	pkgconfig(yaml-0.1)
+Summary:	The vdo plugin for the libblockdev library
+Requires:	%{name}-utils >= 0.11
+Requires:	vdo
+Requires:	kmod-kvdo
 
 %description vdo
 The libblockdev library plugin (and in the same time a standalone library)
@@ -276,7 +276,7 @@ providing the functionality related to VDO devices.
 %package -n	%{libdbvdodev}
 Summary:	Development files for the libblockdev-vdo plugin/library
 Requires:	%{libdbvdo} = %{EVRD}
-Requires:       pkgconfig(glib-2.0)
+Requires:	pkgconfig(glib-2.0)
 
 %description -n %{libdbvdodev}
 This package contains header files and pkg-config files needed for development
@@ -341,7 +341,6 @@ BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(mount)
 Summary:	The FS plugin for the libblockdev library
 Requires:	%{libbdutils}
-Requires:	multipath-tools
 
 %description -n %{libdbfs}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -487,7 +486,7 @@ with the libblockdev-mdraid plugin/library.
 BuildRequires:	pkgconfig(libndctl)
 BuildRequires:	libuuid-devel
 Summary:	The NVDIMM plugin for the libblockdev library
-Requires:       %{libbdutils}
+Requires:	%{libbdutils}
 Requires:	ndctl
 
 %description -n %{libdbnvdimm}
@@ -503,7 +502,6 @@ Requires:	%{libdbnvdimm} = %{EVRD}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-mpath plugin/library.
 %endif
-
 
 %if %{with_mpath}
 %package -n %{libdbmpath}
@@ -530,10 +528,9 @@ with the libblockdev-mpath plugin/library.
 
 %if %{with_part}
 %package -n %{libdbpart}
-BuildRequires:	parted-devel
+BuildRequires:	pkgconfig(libparted)
 Summary:	The partitioning plugin for the libblockdev library
 Requires:	%{libbdutils}
-Requires:	multipath-tools
 Requires:	gdisk
 Requires:	util-linux
 
@@ -577,11 +574,11 @@ with the libblockdev-swap plugin/library.
 
 %if %{with_tools}
 %package tools
-Summary:    Various nice tools based on libblockdev
-Requires:   %{libbdlvm} = %{EVRD}
-BuildRequires: libbytesize-devel
+Summary:	Various nice tools based on libblockdev
+Requires:	%{libbdlvm} = %{EVRD}
+BuildRequires:	libbytesize-devel
 %if %{with_lvm_dbus}
-Recommends: %{name}-lvm-dbus
+Recommends:	%{name}-lvm-dbus
 %endif
 
 %description tools
@@ -659,7 +656,7 @@ Requires:	%{libdbvdo} = %{version}-%{release}
 %endif
 
 %if %{with_part_err}
-Requires: 	%{libdbparterr} = %{version}-%{release}
+Requires:	%{libdbparterr} = %{version}-%{release}
 %endif
 
 %if %{with_part}
