@@ -133,7 +133,7 @@
 
 Name:		libblockdev
 Version:	2.23
-Release:	3
+Release:	4
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
@@ -221,6 +221,7 @@ BuildRequires:	pkgconfig(bytesize)
 Summary:	The BTRFS plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	btrfs-progs
+Provides:	%{name}-btrfs = %{EVRD}
 
 %description -n %{libbdbtrfs}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -244,6 +245,7 @@ BuildRequires:	pkgconfig(libcryptsetup)
 BuildRequires:	volume_key-devel
 BuildRequires:	nss-devel
 Summary:	The crypto plugin for the libblockdev library
+Provides:	%{name}-crypto = %{EVRD}
 
 %description -n %{libbdcrypto}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -268,8 +270,9 @@ Summary:	The vdo plugin for the libblockdev library
 Requires:	%{name}-utils >= 0.11
 Requires:	vdo
 Requires:	kmod-kvdo
+Provides:	%{name}-vdo = %{EVRD}
 
-%description vdo
+%description %{libdbvdo}
 The libblockdev library plugin (and in the same time a standalone library)
 providing the functionality related to VDO devices.
 
@@ -288,6 +291,7 @@ with the libblockdev-vdo plugin/library.
 BuildRequires:	pkgconfig(libcryptsetup)
 Summary:	A library with utility functions for the libblockdev library
 Requires:	%{libbdutils} = %{version}-%{release}
+Provides:	%{name}-part_err = %{EVRD}
 
 %description -n %{libdbparterr}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -314,6 +318,7 @@ Summary:	The Device Mapper plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	dmsetup
 Requires:	dmraid
+Provides:	%{name}-dm = %{EVRD}
 
 %description -n %{libbddm}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -341,6 +346,7 @@ BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(mount)
 Summary:	The FS plugin for the libblockdev library
 Requires:	%{libbdutils}
+Provides:	%{name}-fs = %{EVRD}
 
 %description -n %{libdbfs}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -368,6 +374,7 @@ Requires:	%{libbdutils}
 %if %{with_bcache}
 Requires:	bcache-tools
 %endif
+Provides:	%{name}-kbd = %{EVRD}
 
 %description -n %{libdbkbd}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -390,6 +397,7 @@ with the libblockdev-kbd plugin/library.
 %package -n %{libbdloop}
 Summary:	The loop plugin for the libblockdev library
 Requires:	%{libbdutils}
+Provides:	%{name}-loop = %{EVRD}
 
 %description -n %{libbdloop}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -416,6 +424,7 @@ Requires:	lvm2
 # for thin_metadata_size
 # fix me
 #Requires:	thin-provisioning-tools
+Provides:	%{name}-lvm = %{EVRD}
 
 %description -n %{libbdlvm}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -441,6 +450,7 @@ Requires:	%{libbdutils}
 Requires:	lvm2-dbusd >= 2.02.156
 # for thin_metadata_size
 Requires:	thin-provisioning-tools
+Provides:	%{name}-lvm-dbus = %{EVRD}
 
 %description -n %{libbdlvmdbus}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -464,6 +474,7 @@ BuildRequires:	libbytesize-devel
 Summary:	The MD RAID plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	mdadm
+Provides:	%{name}-mdraid = %{EVRD}
 
 %description -n %{libbdmdraid}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -488,6 +499,7 @@ BuildRequires:	libuuid-devel
 Summary:	The NVDIMM plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	ndctl
+Provides:	%{name}-nvdimm = %{EVRD}
 
 %description -n %{libdbnvdimm}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -509,6 +521,7 @@ BuildRequires:	pkgconfig(devmapper) >= 1.02.153
 Summary:	The multipath plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	multipath-tools
+Provides:	%{name}-mpath = %{EVRD}
 
 %description -n %{libdbmpath}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -533,6 +546,7 @@ Summary:	The partitioning plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	gdisk
 Requires:	util-linux
+Provides:	%{name}-part = %{EVRD}
 
 %description -n %{libdbpart}
 The libblockdev library plugin (and in the same time a standalone library)
@@ -555,6 +569,7 @@ with the libblockdev-part plugin/library.
 Summary:	The swap plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	util-linux
+Provides:	%{name}-swap = %{EVRD}
 
 %description -n %{libdbswap}
 The libblockdev library plugin (and in the same time a standalone library)
