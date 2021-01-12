@@ -132,7 +132,7 @@
 %define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts} %{?tools_copts}
 
 Name:		libblockdev
-Version:	2.24
+Version:	2.25
 Release:	1
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
