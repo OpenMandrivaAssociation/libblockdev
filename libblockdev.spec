@@ -133,7 +133,7 @@
 
 Name:		libblockdev
 Version:	2.25
-Release:	1
+Release:	2
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
@@ -693,7 +693,6 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 %autosetup -p1
 
 %build
-export
 %configure %{?configure_opts} --without-gtk-doc
 %make_build
 
