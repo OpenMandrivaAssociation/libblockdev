@@ -133,7 +133,7 @@
 
 Name:		libblockdev
 Version:	2.25
-Release:	2
+Release:	3
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
@@ -497,7 +497,7 @@ with the libblockdev-mdraid plugin/library.
 %if %{with_nvdimm}
 %package -n %{libdbnvdimm}
 BuildRequires:	pkgconfig(libndctl)
-BuildRequires:	libuuid-devel
+BuildRequires:	pkgconfig(uuid)
 Summary:	The NVDIMM plugin for the libblockdev library
 Requires:	%{libbdutils}
 Requires:	ndctl
