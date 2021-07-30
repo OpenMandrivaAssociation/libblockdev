@@ -132,14 +132,13 @@
 %define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts} %{?tools_copts}
 
 Name:		libblockdev
-Version:	2.25
-Release:	3
+Version:	2.26
+Release:	1
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
 Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/%{name}-%{version}.tar.gz
 Source1:	libblockdev.rpmlintrc
-Patch0:		libblockdev-2.25-remove-unused-variable.patch
 Patch1:		https://src.fedoraproject.org/rpms/libblockdev/raw/rawhide/f/0001-Fix-comparing-DM-RAID-member-devices-UUID.patch
 BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
@@ -732,7 +731,6 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %if %{with_python3}
 %files -n python-blockdev
 %{python_sitearch}/gi/overrides/BlockDev*
-%{python_sitearch}/gi/overrides/__pycache__/*
 %endif
 
 %files -n %{libbdutils}
