@@ -139,7 +139,6 @@ License:	LGPLv2+
 URL:		https://github.com/rhinstaller/libblockdev
 Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/%{name}-%{version}.tar.gz
 Source1:	libblockdev.rpmlintrc
-Patch0:		libblockdev-2.25-remove-unused-variable.patch
 Patch1:		https://src.fedoraproject.org/rpms/libblockdev/raw/rawhide/f/0001-Fix-comparing-DM-RAID-member-devices-UUID.patch
 BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
