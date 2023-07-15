@@ -1,57 +1,53 @@
-%define major 2
+%define major 3
 
-%define libbdutils %mklibname bd_utils %{major}
+%define libbdutils %mklibname bd_utils
 %define libbdutilsdev %mklibname -d bd_utils
 
-%define libblock %mklibname blockdev %{major}
+%define libblock %mklibname blockdev
 %define libblockdev %mklibname -d blockdev
 
-%define libbdbtrfs %mklibname bd_btrfs %{major}
+%define libbdbtrfs %mklibname bd_btrfs
 %define libbdbtrfsdev %mklibname -d bd_btrfs
 
-%define libbdcrypto %mklibname bd_crypto %{major}
+%define libbdcrypto %mklibname bd_crypto
 %define libbdcryptodev %mklibname -d bd_crypto
 
-%define libbddm %mklibname bd_dm %{major}
+%define libbddm %mklibname bd_dm
 %define libbddmdev %mklibname -d bd_dm
 
-%define libbdloop %mklibname bd_loop %{major}
+%define libbdloop %mklibname bd_loop
 %define libbdloopdev %mklibname -d bd_loop
 
-%define libbdlvm %mklibname bd_lvm %{major}
+%define libbdlvm %mklibname bd_lvm
 %define libbdlvmdev %mklibname -d bd_lvm
 # /libbd_lvm-dbus.so
-%define libbdlvmdbus %mklibname bd_lvm-dbus %{major}
+%define libbdlvmdbus %mklibname bd_lvm-dbus
 %define libbdlvmdbusdev %mklibname -d bd_lvm-dbus
 # libbd_mdraid.so
-%define libbdmdraid %mklibname bd_mdraid %{major}
+%define libbdmdraid %mklibname bd_mdraid
 %define libbdmdraiddev %mklibname -d bd_mdraid
 # libbd_mpath.so.*
-%define libdbmpath %mklibname bd_mpath %{major}
+%define libdbmpath %mklibname bd_mpath
 %define libbdmpathdev %mklibname -d bd_mpath
 # /libbd_swap.so.
-%define libdbswap %mklibname bd_swap %{major}
+%define libdbswap %mklibname bd_swap
 %define libbdswapdev %mklibname -d bd_swap
 # /libbd_part.so.
-%define libdbpart %mklibname bd_part %{major}
+%define libdbpart %mklibname bd_part
 %define libbdpartdev %mklibname -d bd_part
-# /libbd_part_err.so.
-%define libdbparterr %mklibname bd_part_err %{major}
-%define libbdparterrdev %mklibname -d bd_part_err
-# /libbd_kbd.so.
-%define libdbkbd %mklibname bd_kbd %{major}
-%define libbdkbddev %mklibname -d bd_kbd
 # libbd_fs.so.
-%define libdbfs %mklibname bd_fs %{major}
+%define libdbfs %mklibname bd_fs
 %define libbdfsdev %mklibname -d bd_fs
 
 # libbd_nvdimm.so.
-%define libdbnvdimm %mklibname bd_nvdimm %{major}
+%define libdbnvdimm %mklibname bd_nvdimm
 %define libdbnvdimmdev %mklibname -d bd_nvdimm
 # libbd_vdo.so.
-%define libdbvdo %mklibname bd_vdo %{major}
+%define libdbvdo %mklibname bd_vdo
 %define libbdvdodev %mklibname -d bd_vdo
 
+%define libnvme %mklibname bd_nvme
+%define libnvmedev %mklibname -d bd_nvme
 
 %define Werror_cflags %nil
 %define with_python3 1
@@ -66,9 +62,7 @@
 %define with_mdraid 1
 %define with_mpath 1
 %define with_swap 1
-%define with_kbd 1
 %define with_part 1
-%define with_part_err 1
 %define with_fs 1
 %define with_gi 1
 %define with_nvdimm 1
@@ -107,9 +101,6 @@
 %if %{with_swap} != 1
 %define swap_copts --without-swap
 %endif
-%if %{with_kbd} != 1
-%define kbd_copts --without-kbd
-%endif
 %if %{with_part} != 1
 %define part_copts --without-part
 %endif
@@ -129,14 +120,14 @@
 %define tools_copts --without-tools
 %endif
 
-%define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?kbd_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts} %{?tools_copts}
+%define configure_opts %{?python2_copts} %{?python3_copts} %{?bcache_copts} %{?lvm_dbus_copts} %{?btrfs_copts} %{?crypto_copts} %{?dm_copts} %{?loop_copts} %{?lvm_copts} %{?lvm_dbus_copts} %{?mdraid_copts} %{?mpath_copts} %{?swap_copts} %{?part_copts} %{?fs_copts} %{?nvdimm_copts} %{?vdo_copts} %{?gi_copts} %{?tools_copts}
 
 Name:		libblockdev
-Version:	2.28
-Release:	2
+Version:	3.0.1
+Release:	1
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
-URL:		https://github.com/rhinstaller/libblockdev
+URL:		https://github.com/storaged-project/libblockdev
 Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/%{name}-%{version}.tar.gz
 Source1:	libblockdev.rpmlintrc
 
@@ -144,6 +135,7 @@ BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(yaml-0.1)
 BuildRequires:	pkgconfig(libdaxctl)
+BuildRequires:	pkgconfig(libnvme)
 %if %{with_gi}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %endif
@@ -171,6 +163,13 @@ a thin wrapper around its plugins' functionality. All the plugins, however, can
 be used as standalone libraries. One of the core principles of libblockdev is
 that it is stateless from the storage configuration's perspective (e.g. it has
 no information about VGs when creating an LV).
+
+%package -n vfat-resize
+Summary:	Tool for resizing VFAT partitions
+Group:		System/Kernel and hardware
+
+%description -n vfat-resize
+Tool for resizing VFAT partitions
 
 %package -n %{libblock}
 Summary:	Libblockdev libraries
@@ -287,29 +286,6 @@ This package contains header files and pkg-config files needed for development
 with the libblockdev-vdo plugin/library.
 %endif
 
-%if %{with_part_err}
-%package -n %{libdbparterr}
-BuildRequires:	pkgconfig(libcryptsetup)
-Summary:	A library with utility functions for the libblockdev library
-Requires:	%{libbdutils} = %{version}-%{release}
-Provides:	%{name}-part_err = %{EVRD}
-
-%description -n %{libdbparterr}
-The libblockdev library plugin (and in the same time a standalone library)
-providing the functionality related to encrypted devices (LUKS).
-
-%package -n %{libbdparterrdev}
-Summary:	Development files for the libblockdev-crypto plugin/library
-Provides:	bd_part_err-devel = %{EVRD}
-Requires:	%{libdbparterr} = %{EVRD}
-Requires:	%{libbdutilsdev} = %{EVRD}
-Requires:	pkgconfig(glib-2.0)
-
-%description -n %{libbdparterrdev}
-This package contains header files and pkg-config files needed for development
-with the libblockdev-crypto plugin/library.
-%endif
-
 %if %{with_dm}
 %package -n %{libbddm}
 BuildRequires:	pkgconfig(devmapper) >= 1.02.153
@@ -365,33 +341,6 @@ Requires:	dosfstools
 %description -n %{libbdfsdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-fs plugin/library.
-%endif
-
-%if %{with_kbd}
-%package -n %{libdbkbd}
-BuildRequires:	kmod-devel
-Summary:	The KBD plugin for the libblockdev library
-Requires:	%{libbdutils}
-%if %{with_bcache}
-Requires:	bcache-tools
-%endif
-Provides:	%{name}-kbd = %{EVRD}
-
-%description -n %{libdbkbd}
-The libblockdev library plugin (and in the same time a standalone library)
-providing the functionality related to kernel block devices (namely zRAM and
-Bcache).
-
-%package -n %{libbdkbddev}
-Summary:	Development files for the libblockdev-kbd plugin/library
-Provides:	bd_kbd-devel = %{EVRD}
-Requires:	%{libdbkbd} = %{EVRD}
-Requires:	%{libbdutilsdev}
-Requires:	pkgconfig(glib-2.0)
-
-%description -n %{libbdkbddev}
-This package contains header files and pkg-config files needed for development
-with the libblockdev-kbd plugin/library.
 %endif
 
 %if %{with_loop}
@@ -515,6 +464,25 @@ Requires:	%{libdbnvdimm} = %{EVRD}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-mpath plugin/library.
 %endif
+
+%package -n %{libnvme}
+Summary:	The NVME plugin for the libblockdev library
+Requires:	%{libbdutils}
+Requires:	ndctl
+Provides:	%{name}-nvme = %{EVRD}
+
+%description -n %{libnvme}
+The libblockdev library plugin (and in the same time a standalone library)
+providing the functionality related to operations with NVME devices.
+
+%package -n %{libnvmedev}
+Summary:	Development files for the libblockdev-nvme plugin/library
+Provides:	bd_nvme-devel = %{EVRD}
+Requires:	%{libnvme} = %{EVRD}
+
+%description -n %{libnvmedev}
+This package contains header files and pkg-config files needed for development
+with the libblockdev-nvme plugin/library.
 
 %if %{with_mpath}
 %package -n %{libdbmpath}
@@ -643,10 +611,6 @@ Requires:	%{libbddm} = %{version}-%{release}
 Requires:	%{libdbfs} = %{version}-%{release}
 %endif
 
-%if %{with_kbd}
-Requires:	%{libdbkbd} = %{version}-%{release}
-%endif
-
 %if %{with_loop}
 Requires:	%{libbdloop} = %{version}-%{release}
 %endif
@@ -667,12 +631,10 @@ Requires:	%{libdbmpath} = %{version}-%{release}
 Requires:	%{libdbnvdimm} = %{version}-%{release}
 %endif
 
+Requires:	%{libnvme} = %{version}-%{release}
+
 %if %{with_vdo}
 Requires:	%{libdbvdo} = %{version}-%{release}
-%endif
-
-%if %{with_part_err}
-Requires:	%{libdbparterr} = %{version}-%{release}
 %endif
 
 %if %{with_part}
@@ -706,17 +668,20 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %if %{with_gi}
 %{_libdir}/girepository*/BlockDev*.typelib
 %endif
-%config %{_sysconfdir}/libblockdev/conf.d/00-default.cfg
+%dir %{_sysconfdir}/libblockdev
+%dir %{_sysconfdir}/libblockdev/3
+%dir %{_sysconfdir}/libblockdev/3/conf.d
+%config %{_sysconfdir}/libblockdev/3/conf.d/00-default.cfg
 
 %files -n %{libblockdev}
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%doc features.rst specs.rst
 %{_libdir}/libblockdev.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/blockdev.h
 %{_includedir}/blockdev/plugins.h
 %{_includedir}/blockdev/dbus.h
+%{_includedir}/blockdev/logging.h
 %{_includedir}/blockdev/module.h
 %dir %{_includedir}/blockdev/fs
 %{_includedir}/blockdev/fs/*.h
@@ -735,14 +700,6 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 
 %files -n %{libbdutils}
 %{_libdir}/libbd_utils.so.*
-
-%if %{with_part_err}
-%files -n %{libdbparterr}
-%{_libdir}/libbd_part_err.so.*
-
-%files -n %{libbdparterrdev}
-%{_libdir}/libbd_part_err.so
-%endif
 
 %files -n %{libbdutilsdev}
 %{_libdir}/libbd_utils.so
@@ -795,16 +752,6 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %{_includedir}/blockdev/fs.h
 %endif
 
-%if %{with_kbd}
-%files -n %{libdbkbd}
-%{_libdir}/libbd_kbd.so.*
-
-%files -n %{libbdkbddev}
-%{_libdir}/libbd_kbd.so
-%dir %{_includedir}/blockdev
-%{_includedir}/blockdev/kbd.h
-%endif
-
 %if %{with_loop}
 %files -n %{libbdloop}
 %{_libdir}/libbd_loop.so.%{major}*
@@ -828,7 +775,7 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %if %{with_lvm_dbus}
 %files -n %{libbdlvmdbus}
 %{_libdir}/libbd_lvm-dbus.so.*
-%config %{_sysconfdir}/libblockdev/conf.d/10-lvm-dbus.cfg
+%config %{_sysconfdir}/libblockdev/3/conf.d/10-lvm-dbus.cfg
 
 %files -n %{libbdlvmdbusdev}
 %{_libdir}/libbd_lvm-dbus.so
@@ -884,6 +831,14 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %{_includedir}/blockdev/nvdimm.h
 %endif
 
+%files -n %{libnvme}
+%{_libdir}/libbd_nvme.so.%{major}*
+
+%files -n %{libnvmedev}
+%{_libdir}/libbd_nvme.so
+%dir %{_includedir}/blockdev
+%{_includedir}/blockdev/nvme.h
+
 %if %{with_vdo}
 %files -n %{libdbvdo}
 {_libdir}/libbd_vdo.so.%{major}*
@@ -908,5 +863,8 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/s390.h
 %endif
+
+%files -n vfat-resize
+%{_bindir}/vfat-resize
 
 %files plugins-all
