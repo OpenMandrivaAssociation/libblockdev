@@ -136,6 +136,9 @@ BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(yaml-0.1)
 BuildRequires:	pkgconfig(libdaxctl)
 BuildRequires:	pkgconfig(libnvme)
+BuildRequires:	pkgconfig(fdisk)
+BuildRequires:	pkgconfig(ext2fs)
+BuildRequires:	pkgconfig(e2p)
 %if %{with_gi}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %endif
