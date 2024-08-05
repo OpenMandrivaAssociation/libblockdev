@@ -5,6 +5,7 @@
 
 %define libblock %mklibname blockdev
 %define libblockdev %mklibname -d blockdev
+%define libblockgir %mklibname blockdev-gir
 
 %define libbdbtrfs %mklibname bd_btrfs
 %define libbdbtrfsdev %mklibname -d bd_btrfs
@@ -124,7 +125,7 @@
 
 Name:		libblockdev
 Version:	3.1.1
-Release:	1
+Release:	2
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/storaged-project/libblockdev
@@ -191,6 +192,15 @@ Requires:	pkgconfig(glib-2.0)
 %description -n %{libblockdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev library.
+
+%package -n %{libblockgir}
+Summary:	Libblockdev GIR libraries
+Group:		System/Libraries
+
+%description -n %{libblockgir}
+The libblockdev is a C library with GObject introspection support that can be
+used for doing low-level operations with block devices like setting up LVM,
+BTRFS, LUKS or MD RAID.
 
 %if %{with_python3}
 %package -n python-blockdev
@@ -668,13 +678,15 @@ find %{buildroot} -type f -name "*.la" | xargs %{__rm}
 
 %files -n %{libblock}
 %{_libdir}/libblockdev.so.%{major}*
-%if %{with_gi}
-%{_libdir}/girepository*/BlockDev*.typelib
-%endif
 %dir %{_sysconfdir}/libblockdev
 %dir %{_sysconfdir}/libblockdev/3
 %dir %{_sysconfdir}/libblockdev/3/conf.d
 %config %{_sysconfdir}/libblockdev/3/conf.d/00-default.cfg
+
+%if %{with_gi}
+%files -n %{libblockgir}
+%{_libdir}/girepository*/BlockDev*.typelib
+%endif
 
 %files -n %{libblockdev}
 %{!?_licensedir:%global license %%doc}
