@@ -1,0 +1,12 @@
+diff -up libblockdev-3.1.1/src/plugins/fs/Makefile.am.omv~ libblockdev-3.1.1/src/plugins/fs/Makefile.am
+--- libblockdev-3.1.1/src/plugins/fs/Makefile.am.omv~	2024-08-05 23:58:12.241252714 +0200
++++ libblockdev-3.1.1/src/plugins/fs/Makefile.am	2024-08-05 23:58:33.021494939 +0200
+@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = subdir-objects
+ 
+ lib_LTLIBRARIES = libbd_fs.la
+ 
+-libbd_fs_la_CFLAGS   = $(GLIB_CFLAGS) $(GIO_CFLAGS) $(BLKID_CFLAGS) $(MOUNT_CFLAGS) $(UUID_CFLAGS) $(EXT2FS_CFLAGS) -Wall -Wextra -Werror
++libbd_fs_la_CFLAGS   = $(GLIB_CFLAGS) $(GIO_CFLAGS) $(BLKID_CFLAGS) $(MOUNT_CFLAGS) $(UUID_CFLAGS) $(EXT2FS_CFLAGS) -Wall -Wextra -Werror -Wno-error=unused-parameter
+ libbd_fs_la_LIBADD   = ${builddir}/../../utils/libbd_utils.la $(GLIB_LIBS) $(GIO_LIBS) $(BLKID_LIBS) $(MOUNT_LIBS) $(UUID_LIBS) $(EXT2FS_LIBS)
+ libbd_fs_la_LDFLAGS	 = -L${srcdir}/../../utils/ -version-info 3:0:0 -Wl,--no-undefined -export-symbols-regex '^bd_.*'
+ libbd_fs_la_CPPFLAGS = -I${builddir}/../../../include/ -I${srcdir}/../

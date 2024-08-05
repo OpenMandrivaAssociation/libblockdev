@@ -132,6 +132,7 @@ URL:		https://github.com/storaged-project/libblockdev
 Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/%{name}-%{version}.tar.gz
 Source1:	libblockdev.rpmlintrc
 
+BuildRequires:	slibtool
 BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(yaml-0.1)
@@ -158,6 +159,9 @@ BuildRequires:	gtk-doc
 # Needed for python 2 vs. 3 compatibility in the tests, but not used to build
 # BuildRequires: python-six
 # BuildRequires: python3-six
+
+%patchlist
+libblockdev-buildfix.patch
 
 %description
 The libblockdev is a C library with GObject introspection support that can be
@@ -670,11 +674,10 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %build
 %configure %{?configure_opts} --without-gtk-doc
-%make_build
+%make_build LIBTOOL=slibtool-shared
 
 %install
-%make_install
-find %{buildroot} -type f -name "*.la" | xargs %{__rm}
+%make_install LIBTOOL=slibtool-shared
 
 %files -n %{libblock}
 %{_libdir}/libblockdev.so.%{major}*
