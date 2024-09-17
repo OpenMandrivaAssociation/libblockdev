@@ -671,6 +671,9 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 %autosetup -p1
 
 %build
+export CC=gcc
+export CXX=g++
+
 %configure %{?configure_opts} --without-gtk-doc
 %make_build LIBTOOL=slibtool-shared
 
