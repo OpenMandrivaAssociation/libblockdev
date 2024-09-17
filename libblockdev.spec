@@ -160,9 +160,6 @@ BuildRequires:	gtk-doc
 # BuildRequires: python-six
 # BuildRequires: python3-six
 
-%patchlist
-libblockdev-buildfix.patch
-
 %description
 The libblockdev is a C library with GObject introspection support that can be
 used for doing low-level operations with block devices like setting up LVM,
