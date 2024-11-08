@@ -161,7 +161,7 @@ BuildRequires:	gtk-doc
 # BuildRequires: python3-six
 
 %patchlist
-libblockdev-buildfix.patch
+#libblockdev-buildfix.patch
 
 %description
 The libblockdev is a C library with GObject introspection support that can be
