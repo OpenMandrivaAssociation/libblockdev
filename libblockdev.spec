@@ -574,6 +574,43 @@ This package contains header files and pkg-config files needed for development
 with the libblockdev-swap plugin/library.
 %endif
 
+%package smart
+Summary:     The smart plugin for the libblockdev library
+Requires:	%{libbdutilsdev}
+
+%description smart
+The libblockdev library plugin (and in the same time a standalone library)
+providing S.M.A.R.T. monitoring and testing functionality, based on libatasmart.
+
+%package smart-devel
+Summary:     Development files for the libblockdev-smart plugin/library
+Requires: %{name}-smart%{?_isa} = %{version}-%{release}
+Requires:	%{libbdutilsdev}
+Requires:	pkgconfig(glib-2.0)
+
+%description smart-devel
+This package contains header files and pkg-config files needed for development
+with the libblockdev-smart plugin/library.
+
+%package smartmontools
+Summary:     The smartmontools plugin for the libblockdev library
+Requires:	%{libbdutilsdev}
+Requires: smartmontools >= 7.0
+
+%description smartmontools
+The libblockdev library plugin (and in the same time a standalone library)
+providing S.M.A.R.T. monitoring and testing functionality, based on smartmontools.
+
+%package smartmontools-devel
+Summary:     Development files for the libblockdev-smart plugin/library
+Requires: %{name}-smartmontools%{?_isa} = %{version}-%{release}
+Requires: %{libbdutilsdev}
+Requires: glib2-devel
+
+%description smartmontools-devel
+This package contains header files and pkg-config files needed for development
+with the libblockdev-smart plugin/library.%endif 
+
 %if %{with_tools}
 %package tools
 Summary:	Various nice tools based on libblockdev
@@ -885,5 +922,21 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %files -n vfat-resize
 %{_bindir}/vfat-resize
+
+%files smart
+%{_libdir}/libbd_smart.so.*
+ 
+%files smart-devel
+%{_libdir}/libbd_smart.so
+%dir %{_includedir}/blockdev
+%{_includedir}/blockdev/smart.h
+
+%files smartmontools
+%{_libdir}/libbd_smartmontools.so.*
+
+%files smartmontools-devel
+%{_libdir}/libbd_smartmontools.so
+%dir %{_includedir}/blockdev
+%{_includedir}/blockdev/smart.h 
 
 %files plugins-all
