@@ -133,6 +133,7 @@ Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{ver
 Source1:	libblockdev.rpmlintrc
 
 BuildRequires:	slibtool
+BuildRequires:  pkgconfig(libatasmart)
 BuildRequires:	pkgconfig(libkmod)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(yaml-0.1)
