@@ -50,6 +50,12 @@
 %define libnvme %mklibname bd_nvme
 %define libnvmedev %mklibname -d bd_nvme
 
+%define libsmart %mklibname smart
+%define libsmartdev %mklibname -d smart
+
+%define libsmartmontools %mklibname smartmontools
+%define libsmartmontoolsdev %mklibname -d smartmontools
+
 %define Werror_cflags %nil
 %define with_python3 1
 %define with_gtk_doc 0
@@ -574,40 +580,40 @@ This package contains header files and pkg-config files needed for development
 with the libblockdev-swap plugin/library.
 %endif
 
-%package smart
+%package -n %{libsmart}
 Summary:     The smart plugin for the libblockdev library
 Requires:	%{libbdutilsdev}
 
-%description smart
+%description -n %{libsmart}
 The libblockdev library plugin (and in the same time a standalone library)
 providing S.M.A.R.T. monitoring and testing functionality, based on libatasmart.
 
-%package smart-devel
+%package -n %{libsmartdev}
 Summary:     Development files for the libblockdev-smart plugin/library
-Requires: %{name}-smart%{?_isa} = %{version}-%{release}
+Requires: %{libsmart} = %{version}-%{release}
 Requires:	%{libbdutilsdev}
 Requires:	pkgconfig(glib-2.0)
 
-%description smart-devel
+%description -n %{libsmartdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-smart plugin/library.
 
-%package smartmontools
+%package -n %{libsmartmontools}
 Summary:     The smartmontools plugin for the libblockdev library
 Requires:	%{libbdutilsdev}
 Requires: smartmontools >= 7.0
 
-%description smartmontools
+%description -n %{libsmartmontools}
 The libblockdev library plugin (and in the same time a standalone library)
 providing S.M.A.R.T. monitoring and testing functionality, based on smartmontools.
 
-%package smartmontools-devel
+%package -n %{libsmartmontoolsdev}
 Summary:     Development files for the libblockdev-smart plugin/library
-Requires: %{name}-smartmontools%{?_isa} = %{version}-%{release}
+Requires: %{libsmartmontools} = %{version}-%{release}
 Requires: %{libbdutilsdev}
-Requires: glib2-devel
+Requires: pkgconfig(glib-2.0)
 
-%description smartmontools-devel
+%description -n %{libsmartmontoolsdev}
 This package contains header files and pkg-config files needed for development
 with the libblockdev-smart plugin/library.%endif 
 
@@ -923,18 +929,18 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 %files -n vfat-resize
 %{_bindir}/vfat-resize
 
-%files smart
+%files -n %{libsmart}
 %{_libdir}/libbd_smart.so.*
  
-%files smart-devel
+%files -n %{libsmartdev}
 %{_libdir}/libbd_smart.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/smart.h
 
-%files smartmontools
+%files -n %{libsmartmontools}
 %{_libdir}/libbd_smartmontools.so.*
 
-%files smartmontools-devel
+%files -n %{libsmartmontoolsdev}
 %{_libdir}/libbd_smartmontools.so
 %dir %{_includedir}/blockdev
 %{_includedir}/blockdev/smart.h 
