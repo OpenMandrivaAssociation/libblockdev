@@ -131,7 +131,7 @@
 
 Name:		libblockdev
 Version:	3.3.0
-Release:	1
+Release:	2
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/storaged-project/libblockdev
@@ -189,6 +189,11 @@ Tool for resizing VFAT partitions
 %package -n %{libblock}
 Summary:	Libblockdev libraries
 Group:		System/Libraries
+# dlopened for extra functionality on common hw/setups
+Recommends:	%{libsmart} = %{EVRD}
+Recommends:	%{libsmartmontools} = %{EVRD}
+Recommends:	%{libnvme} = %{EVRD}
+Recommends:	%{libbdbtrfs} = %{EVRD}
 
 %description -n %{libblock}
 The libblockdev is a C library with GObject introspection support that can be
