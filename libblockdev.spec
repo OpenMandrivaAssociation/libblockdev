@@ -131,7 +131,7 @@
 
 Name:		libblockdev
 Version:	3.3.0
-Release:	2
+Release:	3
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/storaged-project/libblockdev
@@ -605,7 +605,6 @@ with the libblockdev-smart plugin/library.
 
 %package -n %{libsmartmontools}
 Summary:     The smartmontools plugin for the libblockdev library
-Requires:	%{libbdutilsdev}
 Requires: smartmontools >= 7.0
 
 %description -n %{libsmartmontools}
