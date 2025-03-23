@@ -131,7 +131,7 @@
 
 Name:		libblockdev
 Version:	3.3.0
-Release:	3
+Release:	4
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/storaged-project/libblockdev
@@ -587,7 +587,6 @@ with the libblockdev-swap plugin/library.
 
 %package -n %{libsmart}
 Summary:     The smart plugin for the libblockdev library
-Requires:	%{libbdutilsdev}
 
 %description -n %{libsmart}
 The libblockdev library plugin (and in the same time a standalone library)
