@@ -131,7 +131,7 @@
 
 Name:		libblockdev
 Version:	3.4.0
-Release:	1
+Release:	2
 Summary:	A library for low-level manipulation with block devices
 License:	LGPLv2+
 URL:		https://github.com/storaged-project/libblockdev
