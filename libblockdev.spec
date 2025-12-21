@@ -138,6 +138,10 @@ URL:		https://github.com/storaged-project/libblockdev
 Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/%{name}-%{version}.tar.gz
 Source1:	libblockdev.rpmlintrc
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	make
 BuildRequires:	slibtool
 BuildRequires:  pkgconfig(libatasmart)
 BuildRequires:	pkgconfig(libkmod)
