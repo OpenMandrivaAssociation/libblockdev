@@ -139,6 +139,7 @@ Source0:	https://github.com/storaged-project/libblockdev/releases/download/%{ver
 Source1:	libblockdev.rpmlintrc
 
 BuildRequires:	autoconf
+BuildRequires:	autoconf-archive
 BuildRequires:	automake
 BuildRequires:	libtool-base
 BuildRequires:	make
