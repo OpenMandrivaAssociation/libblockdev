@@ -726,6 +726,8 @@ A meta-package that pulls all the libblockdev plugins as dependencies.
 
 %build
 %configure %{?configure_opts} --without-gtk-doc
+# g-ir-scanner cannot parse clang's C23 "typedef typeof(nullptr) nullptr_t".
+sed -i 's/-std=gnu23/-std=gnu23 -D_NULLPTR_T/g' $(find . -name Makefile)
 %make_build LIBTOOL=slibtool-shared
 
 %install
